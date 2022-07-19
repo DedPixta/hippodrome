@@ -12,7 +12,7 @@ class MainTest {
     @Timeout(value = 22)
     @Test
     void main() throws Exception {
-        Main.main(new String[]{""});
+        Main.main(null);
     }
 
 }

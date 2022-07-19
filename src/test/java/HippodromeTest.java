@@ -63,7 +63,7 @@ class HippodromeTest {
     }
 
     @Test
-    void move_VerifyInvokeMethod_OnEachHorse() {
+    void move_MovedEachHorse() {
         List<Horse> horses = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             Horse horse = Mockito.mock(Horse.class);
@@ -74,7 +74,7 @@ class HippodromeTest {
         hippodrome.move();
 
         for (Horse horse : horses) {
-            Mockito.verify(horse, Mockito.times(1)).move();
+            Mockito.verify(horse).move();
         }
     }
 

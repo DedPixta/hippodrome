@@ -32,9 +32,9 @@ class HorseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"", " ", "   "})
-    void constructor_WhenHorseNameBlank_ThenThrowException(String text) {
-        assertThrows(IllegalArgumentException.class, () -> new Horse(text.trim(), 10, 10));
+    @ValueSource(strings = {"", " ", "   ", " \n"})
+    void constructor_WhenHorseNameBlank_ThenThrowException(String name) {
+        assertThrows(IllegalArgumentException.class, () -> new Horse(name, 10, 10));
     }
 
     @ParameterizedTest
@@ -97,86 +97,77 @@ class HorseTest {
     @ParameterizedTest
     @ValueSource(strings = {"Maria, Vanya"})
     void getName_WhenNewInstance_ThenReturnNameFromConstructor(String name) {
-        String actual;
-        try {
-            Horse horse = new Horse(name, 10, 10);
-            actual = horse.getName();
+        Horse horse = new Horse(name, 10, 10);
 
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
+        String actualName = horse.getName();
 
-        assertEquals(name, actual);
+        assertEquals(name, actualName);
     }
 
     @ParameterizedTest
     @ValueSource(doubles = {100, 200})
     void getSpeed_WhenNewInstance_ThenReturnSpeedFromConstructor(double speed) {
-        double actual;
-        try {
-            Horse horse = new Horse("HorseName", speed, 10);
-            actual = horse.getSpeed();
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
+        Horse horse = new Horse("HorseName", speed, 10);
 
-        assertEquals(speed, actual);
+        double actualSpeed = horse.getSpeed();
+
+        assertEquals(speed, actualSpeed);
     }
 
     @ParameterizedTest
     @ValueSource(doubles = {100, 200})
     void getDistance_WhenNewInstance_ThenReturnDistanceFromConstructor(double distance) {
-        double actual;
-        try {
-            Horse horse = new Horse("HorseName", 10, distance);
-            actual = horse.getDistance();
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
+        Horse horse = new Horse("HorseName", 10, distance);
 
-        assertEquals(distance, actual);
+        double actualDistance = horse.getDistance();
+
+        assertEquals(distance, actualDistance);
     }
 
     @Test
     void getDistance_WhenConstructorWithTwoArguments_ThenReturnZeroDistance() {
-        double actual;
-        try {
-            Horse horse = new Horse("HorseName", 10);
-            actual = horse.getDistance();
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
+        Horse horse = new Horse("HorseName", 10);
 
-        assertEquals(0, actual);
+        double actualDistance = horse.getDistance();
+
+        assertEquals(0, actualDistance);
+    }
+
+    @Test
+    void move_VerifyInvokeMethod_GetRandomDouble() {
+        try (MockedStatic<Horse> mockedStatic = Mockito.mockStatic(Horse.class)) {
+            new Horse("HorseName", 1).move();
+
+            mockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9));
+        }
     }
 
     @ParameterizedTest
     @CsvSource({
             "10, 5, 0.5",
             "15, 10, 0.8"})
-    void move_VerifyInvokeMethod_GetRandomDouble(double speed, double distance, double value) {
+    void move_ChangeDistance(double speed, double distance, double random) {
         try (MockedStatic<Horse> mockedStatic = Mockito.mockStatic(Horse.class)) {
-            mockedStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(value);
+            mockedStatic.when(() -> Horse.getRandomDouble(0.2, 0.9)).thenReturn(random);
             Horse horse = new Horse("HorseName", speed, distance);
-            double expected = distance + speed * value;
+            double expected = distance + speed * random;
 
             horse.move();
             double actual = horse.getDistance();
 
-            mockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9));
             assertEquals(expected, actual);
         }
     }
 
     @Disabled
     @Test
-    void checkLogger(){
+    void checkLogger() {
         final Logger logger = LogManager.getLogger(HorseTest.class);
         for (int i = 0; i < 1000; i++) {
-        logger.debug("Создание Hippodrome, лошадей [{}]", 7);
-        logger.info("Начало скачек. Количество участников {}",6);
-        logger.error("Horses list is null");
-        logger.fatal("fatal");
+            logger.debug("Создание Hippodrome, лошадей [{}]", 7);
+            logger.info("Начало скачек. Количество участников {}", 6);
+            logger.error("Horses list is null");
+            logger.fatal("fatal");
 
         }
     }

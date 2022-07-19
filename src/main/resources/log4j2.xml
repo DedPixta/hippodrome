@@ -4,21 +4,21 @@
         <RollingFile name="RollingFile" fileName="logs/hippodrome.log"
                      filePattern="logs/hippodrome.%d{yyyy-MM-dd}.log">
             <PatternLayout>
-                <Pattern>%d{HH:mm:ss.SSS} %-5level %logger{36}: %msg%n</Pattern>
+                <Pattern>%d %-5level %c: %msg%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="24"/>
             </Policies>
             <DefaultRolloverStrategy>
-                <Delete basePath="${baseDir}/logs">
-                    <IfFileName glob="hippodrome*.log"/>
+                <Delete basePath="logs">
+                    <IfFileName glob="hippodrome.*.log"/>
                     <IfLastModified age="P7D"/>
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="INFO">
             <AppenderRef ref="RollingFile"/>
         </Root>
     </Loggers>
