@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 class HorseTest {
 
     @Test
@@ -18,7 +19,7 @@ class HorseTest {
     }
 
     @Test
-    void constructor_whenHorseNameNull_ThenMessage() {
+    void constructor_WhenHorseNameNull_ThenMessage() {
         String expected = "Name cannot be null.";
         String actual = "";
 
@@ -151,7 +152,8 @@ class HorseTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"10, 5, 0.5",
+    @CsvSource({
+            "10, 5, 0.5",
             "15, 10, 0.8"})
     void move_VerifyInvokeMethod_GetRandomDouble(double speed, double distance, double value) {
         try (MockedStatic<Horse> mockedStatic = Mockito.mockStatic(Horse.class)) {
@@ -164,6 +166,18 @@ class HorseTest {
 
             mockedStatic.verify(() -> Horse.getRandomDouble(0.2, 0.9));
             assertEquals(expected, actual);
+        }
+    }
+
+    @Test
+    void checkLogger(){
+        final Logger logger = LogManager.getLogger(HorseTest.class);
+        for (int i = 0; i < 1000; i++) {
+        logger.debug("Создание Hippodrome, лошадей [{}]", 7);
+        logger.info("Начало скачек. Количество участников {}",6);
+        logger.error("Horses list is null");
+        logger.fatal("fatal");
+
         }
     }
 
