@@ -11,7 +11,7 @@
             </Policies>
             <DefaultRolloverStrategy>
                 <Delete basePath="${baseDir}/logs">
-                    <IfFileName regex="logs/hippodrome.%d{yyyy-MM-dd}.log"/>
+                    <IfFileName glob="hippodrome*.log"/>
                     <IfLastModified age="P7D"/>
                 </Delete>
             </DefaultRolloverStrategy>

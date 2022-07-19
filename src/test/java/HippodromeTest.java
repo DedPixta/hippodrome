@@ -1,10 +1,7 @@
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +74,7 @@ class HippodromeTest {
         hippodrome.move();
 
         for (Horse horse : horses) {
-            Mockito.verify(horse, Mockito.atLeastOnce()).move();
+            Mockito.verify(horse, Mockito.times(1)).move();
         }
     }
 
