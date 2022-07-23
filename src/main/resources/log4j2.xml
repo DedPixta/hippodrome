@@ -7,7 +7,7 @@
                 <Pattern>%d %-5level %c: %msg%n</Pattern>
             </PatternLayout>
             <Policies>
-                <TimeBasedTriggeringPolicy interval="24"/>
+                <TimeBasedTriggeringPolicy />
             </Policies>
             <DefaultRolloverStrategy>
                 <Delete basePath="logs">
